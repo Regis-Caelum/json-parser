@@ -1,0 +1,7 @@
+# Compiled object files
+*.o
+
+# Executable binaries
+*.out
+*.exe
+cli

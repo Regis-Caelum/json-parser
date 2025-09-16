@@ -1,0 +1,73 @@
+{
+    "tasks": [
+        {
+            "label": "Build CLI with Makefile",
+            "type": "shell",
+            "command": "make",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Builds the CLI project using Makefile"
+        },
+        {
+            "label": "Run all tests",
+            "dependsOn": [
+                "Test step 1",
+                "Test step 2"
+            ],
+            "dependsOrder": "sequence",
+            "type": "shell",
+            "command": "echo 'All tests completed!'",
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Test step 1",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "for f in commands/json/tests/step1/*; do ./cli json -f \"$f\"; done"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "dependsOn": "Build CLI with Makefile"
+        },
+        {
+            "label": "Test step 2",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "for f in commands/json/tests/step2/*; do ./cli json -f \"$f\"; done"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "dependsOn": "Build CLI with Makefile"
+        }
+    ],
+    "version": "2.0.0"
+}
