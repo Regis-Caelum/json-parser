@@ -50,6 +50,11 @@ void stack_top(Stack *s, void *out)
     memcpy(out, s->data + (s->size - 1) * s->elem_size, s->elem_size);
 }
 
+bool stack_empty(Stack *s)
+{
+    return s->size == 0;
+}
+
 void stack_free(Stack *s)
 {
     free(s->data);

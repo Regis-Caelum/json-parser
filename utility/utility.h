@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include <ctype.h>
 
 char *read_file(const char *filename);
 
@@ -18,3 +20,4 @@ void stack_push(Stack *s, void *elem);
 void stack_pop(Stack *s, void *out);
 void stack_top(Stack *s, void *out);
 void stack_free(Stack *s);
+bool stack_empty(Stack *s);
