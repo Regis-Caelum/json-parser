@@ -1,7 +1,7 @@
 #pragma once
 #include "../../command.h"
 
-extern Command JsonCommand;
+extern command json_command;
 
 typedef enum
 {
@@ -13,27 +13,27 @@ typedef enum
     JSON_OBJECT
 } JsonType;
 
-struct JsonValue;
+struct json_value;
 
-typedef struct JsonArray
+typedef struct json_array
 {
-    struct JsonValue **items;
+    struct json_value **items;
     size_t length;
-} JsonArray;
+} json_array;
 
-typedef struct JsonObjectEntry
+typedef struct json_object_entry
 {
     char *key;
-    struct JsonValue *value;
-} JsonObjectEntry;
+    struct json_value *value;
+} json_object_entry;
 
-typedef struct JsonObject
+typedef struct json_object
 {
-    JsonObjectEntry *entries;
+    json_object_entry *entries;
     size_t length;
-} JsonObject;
+} json_object;
 
-typedef struct JsonValue
+typedef struct json_value
 {
     JsonType type;
     union
@@ -41,7 +41,7 @@ typedef struct JsonValue
         double number;
         int boolean;
         char *string;
-        JsonArray array;
-        JsonObject object;
+        json_array array;
+        json_object object;
     } u;
-} JsonValue;
+} json_value;

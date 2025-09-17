@@ -3,5 +3,5 @@
 typedef struct
 {
     const char *name;
-    int (*processArguments)(int argc, char *argv[]);
-} Command;
+    int (*process_arguments)(int argc, char *argv[]);
+} command;

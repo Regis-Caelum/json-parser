@@ -4,7 +4,7 @@
 #include "json.h"
 #include "../../utility/utility.h"
 
-static bool isValidJsonNumber(const char *s, const char **endptr)
+static bool is_valid_json_number(const char *s, const char **endptr)
 {
     const char *p = s;
 
@@ -52,13 +52,13 @@ static bool isValidJsonNumber(const char *s, const char **endptr)
     return true;
 }
 
-static int validateJson(char *jsonStr)
+static int validate_json(char *jsonStr)
 {
     int res = 0;
     char *q;
     bool in_string = false;
-    Stack stack;
-    stack_init(&stack, sizeof(char *));
+    stack token_stack;
+    stack_init(&token_stack, sizeof(char *));
 
     for (char *p = jsonStr; *p; p++)
     {
@@ -89,7 +89,7 @@ static int validateJson(char *jsonStr)
             if (*p == '-' || isdigit((unsigned char)*p))
             {
                 const char *endptr;
-                if (!isValidJsonNumber(p, &endptr))
+                if (!is_valid_json_number(p, &endptr))
                 {
                     printf("Invalid number at position %ld\n", p - jsonStr);
                     res = 1;
@@ -105,13 +105,13 @@ static int validateJson(char *jsonStr)
             {
             case '[':
             case '{':
-                stack_push(&stack, p);
+                stack_push(&token_stack, p);
                 break;
             case '}':
-                if (!stack_empty(&stack))
+                if (!stack_empty(&token_stack))
                 {
                     char c = '\0';
-                    stack_pop(&stack, &c);
+                    stack_pop(&token_stack, &c);
                     if (c != '{')
                     {
                         printf("Unbalanced braces\n");
@@ -124,10 +124,10 @@ static int validateJson(char *jsonStr)
                 }
                 break;
             case ']':
-                if (!stack_empty(&stack))
+                if (!stack_empty(&token_stack))
                 {
                     char c = '\0';
-                    stack_pop(&stack, &c);
+                    stack_pop(&token_stack, &c);
                     if (c != '[')
                     {
                         printf("Unbalanced brackets\n");
@@ -171,22 +171,22 @@ static int validateJson(char *jsonStr)
 
             if (res)
             {
-                stack_free(&stack);
+                stack_free(&token_stack);
                 return res;
             }
         }
     }
 
-    stack_free(&stack);
+    stack_free(&token_stack);
     return res;
 }
 
-static int parseJson(char *jsonStr, JsonObject *jsonObject)
+static int parse_json(char *jsonStr, json_object *jsonObject)
 {
-    return validateJson(jsonStr);
+    return validate_json(jsonStr);
 }
 
-static int fileFlag(char *argv[])
+static int file_flag(char *argv[])
 {
     const char *filename = argv[2];
     char *buffer = read_file(filename);
@@ -194,19 +194,19 @@ static int fileFlag(char *argv[])
     {
         return 1;
     }
-    JsonObject *jsonObj = NULL;
-    parseJson(buffer, jsonObj);
+    json_object *jsonObj = NULL;
+    parse_json(buffer, jsonObj);
     free(buffer);
     return 0;
 }
 
-static int jsonProcessArguments(int argc, char *argv[])
+static int json_process_arguments(int argc, char *argv[])
 {
     char *flag = argv[1];
     switch (flag[1])
     {
     case 'f':
-        return fileFlag(argv);
+        return file_flag(argv);
     default:
         fprintf(stderr, "Unknown flag: %s\n", flag);
         fprintf(stderr, "Usage: %s -f <file-path>\n", argv[0]);
@@ -216,6 +216,6 @@ static int jsonProcessArguments(int argc, char *argv[])
     return 0;
 }
 
-Command JsonCommand = {
+command json_command = {
     .name = "json",
-    .processArguments = jsonProcessArguments};
+    .process_arguments = json_process_arguments};

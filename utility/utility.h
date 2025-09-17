@@ -13,11 +13,11 @@ typedef struct
     size_t size;
     size_t capacity;
     size_t elem_size;
-} Stack;
+} stack;
 
-void stack_init(Stack *s, size_t elem_size);
-void stack_push(Stack *s, void *elem);
-void stack_pop(Stack *s, void *out);
-void stack_top(Stack *s, void *out);
-void stack_free(Stack *s);
-bool stack_empty(Stack *s);
+void stack_init(stack *s, size_t elem_size);
+void stack_push(stack *s, void *elem);
+void stack_pop(stack *s, void *out);
+void stack_top(stack *s, void *out);
+void stack_free(stack *s);
+bool stack_empty(stack *s);

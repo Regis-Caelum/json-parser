@@ -1,6 +1,6 @@
 #include "utility.h"
 
-void stack_init(Stack *s, size_t elem_size)
+void stack_init(stack *s, size_t elem_size)
 {
     s->size = 0;
     s->capacity = 4;
@@ -13,7 +13,7 @@ void stack_init(Stack *s, size_t elem_size)
     }
 }
 
-void stack_push(Stack *s, void *elem)
+void stack_push(stack *s, void *elem)
 {
     if (s->size >= s->capacity)
     {
@@ -29,33 +29,33 @@ void stack_push(Stack *s, void *elem)
     s->size++;
 }
 
-void stack_pop(Stack *s, void *out)
+void stack_pop(stack *s, void *out)
 {
     if (s->size == 0)
     {
-        fprintf(stderr, "Stack underflow\n");
+        fprintf(stderr, "stack underflow\n");
         exit(1);
     }
     s->size--;
     memcpy(out, s->data + s->size * s->elem_size, s->elem_size);
 }
 
-void stack_top(Stack *s, void *out)
+void stack_top(stack *s, void *out)
 {
     if (s->size == 0)
     {
-        fprintf(stderr, "Stack is empty\n");
+        fprintf(stderr, "stack is empty\n");
         exit(1);
     }
     memcpy(out, s->data + (s->size - 1) * s->elem_size, s->elem_size);
 }
 
-bool stack_empty(Stack *s)
+bool stack_empty(stack *s)
 {
     return s->size == 0;
 }
 
-void stack_free(Stack *s)
+void stack_free(stack *s)
 {
     free(s->data);
     s->data = NULL;

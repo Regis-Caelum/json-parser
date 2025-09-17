@@ -3,9 +3,9 @@
 #include "command.h"
 #include "commands/json/json.h"
 
-extern Command JsonCommand;
+extern command json_command;
 
-Command *commands[] = {&JsonCommand, NULL};
+command *commands[] = {&json_command, NULL};
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     {
         if (strcmp(argv[1], commands[i]->name) == 0)
         {
-            return commands[i]->processArguments(argc - 1, &argv[1]);
+            return commands[i]->process_arguments(argc - 1, &argv[1]);
         }
     }
 
