@@ -3,11 +3,15 @@
 #include "json.h"
 #include "../../utility/utility.h"
 
-static JsonObject *parseJson(char *jsonStr)
+static int validateJson(char *jsonStr)
 {
-    while (*jsonStr != '\0')
-    {
-    }
+    printf("File contents:\n%s\n", jsonStr);
+    return 0;
+}
+
+static int parseJson(char *jsonStr, JsonObject *jsonObject)
+{
+    return validateJson(jsonStr);
 }
 
 static int fileFlag(char *argv[])
@@ -18,8 +22,8 @@ static int fileFlag(char *argv[])
     {
         return 1;
     }
-    printf("File contents:\n%s\n", buffer);
-    const JsonObject *jsonObj = parseJson(buffer);
+    JsonObject *jsonObj = NULL;
+    parseJson(buffer, jsonObj);
     free(buffer);
     return 0;
 }
