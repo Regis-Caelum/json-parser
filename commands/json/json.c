@@ -52,7 +52,7 @@ static bool is_valid_json_number(const char *s, const char **endptr)
     return true;
 }
 
-static int validate_json(char *jsonStr)
+static int validate_json(char *json_str)
 {
     int res = 0;
     char *q;
@@ -60,7 +60,7 @@ static int validate_json(char *jsonStr)
     stack token_stack;
     stack_init(&token_stack, sizeof(char *));
 
-    for (char *p = jsonStr; *p; p++)
+    for (char *p = json_str; *p; p++)
     {
         if (*p == '"')
         {
@@ -91,7 +91,7 @@ static int validate_json(char *jsonStr)
                 const char *endptr;
                 if (!is_valid_json_number(p, &endptr))
                 {
-                    printf("Invalid number at position %ld\n", p - jsonStr);
+                    printf("Invalid number at position %ld\n", p - json_str);
                     res = 1;
                 }
                 else
@@ -151,7 +151,7 @@ static int validate_json(char *jsonStr)
                 break;
             case ':':
                 q = p - 1;
-                while (q > jsonStr && isspace((unsigned char)*q))
+                while (q > json_str && isspace((unsigned char)*q))
                     q--;
                 if (*q != '"')
                 {
@@ -164,7 +164,7 @@ static int validate_json(char *jsonStr)
             case ' ':
                 break;
             default:
-                printf("Unquoted string detected: '%c' at pos %ld\n", *p, p - jsonStr);
+                printf("Unquoted string detected: '%c' at pos %ld\n", *p, p - json_str);
                 res = 1;
                 break;
             }
@@ -181,9 +181,64 @@ static int validate_json(char *jsonStr)
     return res;
 }
 
-static int parse_json(char *jsonStr, json_object *jsonObject)
+static char *parse_json_string(const char *str)
 {
-    return validate_json(jsonStr);
+    if (!str)
+        return NULL;
+
+    const char *start = NULL;
+    const char *end = NULL;
+
+    while (*str && !start)
+    {
+        if (*str == '"')
+            start = str + 1;
+        str++;
+    }
+
+    const char *p = str;
+    while (*p)
+    {
+        if (*p == '"')
+            end = p;
+        p++;
+    }
+
+    if (!start || !end || end <= start)
+    {
+        return NULL;
+    }
+    size_t len = (size_t)(end - start);
+    char *result = malloc(len + 1);
+    if (!result)
+        return NULL;
+
+    strncpy(result, start, len);
+
+    result[len] = '\0';
+
+    return result;
+}
+
+static int parse_json(char *json_str, json_object *json_obj)
+{
+    int is_json_valid = validate_json(json_str);
+    json_obj = NULL;
+    if (is_json_valid != 0)
+        return is_json_valid;
+
+    json_obj = (json_object *)malloc(sizeof(json_object *));
+
+    for (char *p = json_str; *p; p++)
+    {
+        if (*p == '"')
+        {
+            char *str = parse_json_string(p);
+            p += strlen(str);
+        }
+    }
+
+    return 0;
 }
 
 static int file_flag(char *argv[])
@@ -194,8 +249,8 @@ static int file_flag(char *argv[])
     {
         return 1;
     }
-    json_object *jsonObj = NULL;
-    parse_json(buffer, jsonObj);
+    json_object *json_obj = NULL;
+    parse_json(buffer, json_obj);
     free(buffer);
     return 0;
 }
