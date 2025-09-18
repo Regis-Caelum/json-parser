@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "command.h"
-#include "commands/json/json.h"
+#include "commands/json/json_command.h"
 
 extern command json_command;
 
