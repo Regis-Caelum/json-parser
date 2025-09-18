@@ -9,7 +9,10 @@ static int file_flag(char *argv[])
     {
         return 1;
     }
-    json_object *json_obj = parse_json(buffer);
+    const json_object *json_obj = parse_json(buffer);
+    if (!json_obj)
+        return 1;
+    print_json_object(json_obj, 2);
     free(buffer);
     return 0;
 }

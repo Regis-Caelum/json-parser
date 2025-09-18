@@ -3,7 +3,7 @@
         {
             "label": "Build CLI with Makefile",
             "type": "shell",
-            "command": "make",
+            "command": "make clean && make",
             "args": [],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -18,7 +18,9 @@
             "label": "Run all tests",
             "dependsOn": [
                 "Test step 1",
-                "Test step 2"
+                "Test step 2",
+                "Test step 3",
+                "Test step 4"
             ],
             "dependsOrder": "sequence",
             "type": "shell",
@@ -54,6 +56,42 @@
             "args": [
                 "-c",
                 "for f in commands/json/tests/step2/*; do ./cli json -f \"$f\"; done"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "dependsOn": "Build CLI with Makefile"
+        },
+        {
+            "label": "Test step 3",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "for f in commands/json/tests/step3/*; do ./cli json -f \"$f\"; done"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "dependsOn": "Build CLI with Makefile"
+        },
+        {
+            "label": "Test step 4",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "for f in commands/json/tests/step4/*; do ./cli json -f \"$f\"; done"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
