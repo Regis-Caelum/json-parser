@@ -1,7 +1,7 @@
 {
     "files.associations": {
         "*.ctp": "php",
-        "stdio.h": "c",
-        "json_command.h": "c"
+        "*.h": "c",
+        "*.c": "c"
     }
 }
