@@ -60,7 +60,7 @@
                 "--build",
                 "build",
                 "--target",
-                "JSON_PARSER"
+                "JSONPARSER"
             ],
             "group": "build",
             "dependsOn": "CMake: Configure Parser (Ninja + Clang)",
@@ -150,7 +150,7 @@
                 "--build",
                 "build_release",
                 "--target",
-                "JSON_PARSER"
+                "JSONPARSER"
             ],
             "group": "build",
             "dependsOn": "CMake: Configure Parser Release",

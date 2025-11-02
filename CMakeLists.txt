@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(JSON_PARSER
+project(LIBJSONPARSER
     VERSION 1.0
-    DESCRIPTION "Json Parser"
     LANGUAGES CXX
 )
 
@@ -14,19 +13,21 @@ if(MSVC)
     add_compile_options(/std:c++latest)
 endif()
 
-# Include your local headers
-include_directories(${PROJECT_SOURCE_DIR}/include)
+file(GLOB_RECURSE LIBJSONPARSER_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 
-# Collect your source files
-file(GLOB_RECURSE JSON_PARSER_SOURCES "src/*.cpp")
+add_library(JSONPARSER STATIC ${LIBJSONPARSER_SOURCES})
 
-# Define your executable
-add_executable(JSON_PARSER ${JSON_PARSER_SOURCES})
 
-# Optional: If you have a main.cpp directly in project root
-# add_executable(JSON_PARSER src/main.cpp)
+target_include_directories(JSONPARSER
+    PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
-# Optional: tests
+target_compile_features(JSONPARSER PUBLIC cxx_std_23)
+
+option(BUILD_TESTS "Build unit tests" OFF)
+
 if(BUILD_TESTS)
     include(FetchContent)
 
@@ -41,21 +42,17 @@ if(BUILD_TESTS)
 
     file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
 
-    # Create tests executable
     add_executable(JSON_PARSER_TESTS ${TEST_SOURCES})
 
-    # Include directories for tests
     target_include_directories(JSON_PARSER_TESTS
         PRIVATE
         ${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/src
     )
 
-    # If tests need your src code, add it
     file(GLOB_RECURSE SRC_SOURCES "src/*.cpp")
     target_sources(JSON_PARSER_TESTS PRIVATE ${SRC_SOURCES})
 
-    # Link with gtest
     target_link_libraries(JSON_PARSER_TESTS
         PRIVATE
         gtest_main
