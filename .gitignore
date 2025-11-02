@@ -8,3 +8,5 @@ cli
 
 # bundles
 *.bundle
+
+build/

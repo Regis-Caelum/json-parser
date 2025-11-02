@@ -1,131 +1,171 @@
 {
+    "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build CLI with Makefile",
             "type": "shell",
-            "command": "make clean && make",
-            "args": [],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
+            "label": "CMake: Clean (Ninja)",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "clean"
             ],
             "group": "build",
-            "detail": "Builds the CLI project using Makefile"
+            "problemMatcher": "$gcc"
         },
         {
-            "label": "Run all tests",
+            "type": "shell",
+            "label": "CMake: Configure Parser (Ninja + Clang)",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "build",
+                "-G",
+                "Ninja",
+                "-DCMAKE_C_COMPILER=clang",
+                "-DCMAKE_CXX_COMPILER=clang++",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DBUILD_TESTS=OFF"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: Configure Tests (Ninja + Clang)",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "build",
+                "-G",
+                "Ninja",
+                "-DCMAKE_C_COMPILER=clang",
+                "-DCMAKE_CXX_COMPILER=clang++",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DBUILD_TESTS=ON"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: Build Parser (Ninja)",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "JSON_PARSER"
+            ],
+            "group": "build",
+            "dependsOn": "CMake: Configure Parser (Ninja + Clang)",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: Build Tests (Ninja)",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "JSON_PARSER_TESTS"
+            ],
+            "group": "build",
+            "dependsOn": "CMake: Configure Tests (Ninja + Clang)",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "Run Parser Executable",
+            "command": "${workspaceFolder}/build/JSON_PARSER.exe",
+            "group": "build",
+            "dependsOn": "CMake: Build Parser (Ninja)",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "Run Tests via CTest",
+            "command": "ctest",
+            "args": [
+                "--test-dir",
+                "${workspaceFolder}/build",
+                "--output-on-failure"
+            ],
+            "group": "test",
+            "dependsOn": "CMake: Build Tests (Ninja)",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "Clean, Build and Run Parser",
             "dependsOn": [
-                "Test step 1",
-                "Test step 2",
-                "Test step 3",
-                "Test step 4"
+                "CMake: Clean (Ninja)",
+                "CMake: Build Parser (Ninja)",
+                "Run Parser Executable"
             ],
-            "dependsOrder": "sequence",
-            "type": "shell",
-            "command": "echo 'All tests completed!'",
-            "problemMatcher": [],
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            }
+            "group": "build",
+            "problemMatcher": "$gcc"
         },
         {
-            "label": "Test step 1",
             "type": "shell",
-            "command": "bash",
-            "args": [
-                "-c",
-                "for f in commands/json/tests/step1/*; do ./cli json -f \"$f\"; done"
+            "label": "Clean, Build and Run Tests",
+            "dependsOn": [
+                "CMake: Clean (Ninja)",
+                "CMake: Build Tests (Ninja)",
+                "Run Tests Executable"
             ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [],
-            "group": {
-                "kind": "test",
-                "isDefault": false
-            },
-            "dependsOn": "Build CLI with Makefile"
+            "group": "build",
+            "problemMatcher": "$gcc"
         },
         {
-            "label": "Test step 2",
             "type": "shell",
-            "command": "bash",
+            "label": "CMake: Configure Parser Release",
+            "command": "cmake",
             "args": [
-                "-c",
-                "for f in commands/json/tests/step2/*; do ./cli json -f \"$f\"; done"
+                "-S",
+                ".",
+                "-B",
+                "build_release",
+                "-G",
+                "Ninja",
+                "-DCMAKE_C_COMPILER=clang",
+                "-DCMAKE_CXX_COMPILER=clang++",
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DBUILD_TESTS=OFF"
             ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [],
-            "group": {
-                "kind": "test",
-                "isDefault": false
-            },
-            "dependsOn": "Build CLI with Makefile"
+            "group": "build",
+            "problemMatcher": "$gcc"
         },
         {
-            "label": "Test step 3",
             "type": "shell",
-            "command": "bash",
+            "label": "CMake: Build Parser Release",
+            "command": "cmake",
             "args": [
-                "-c",
-                "for f in commands/json/tests/step3/*; do ./cli json -f \"$f\"; done"
+                "--build",
+                "build_release",
+                "--target",
+                "JSON_PARSER"
             ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [],
-            "group": {
-                "kind": "test",
-                "isDefault": false
-            },
-            "dependsOn": "Build CLI with Makefile"
+            "group": "build",
+            "dependsOn": "CMake: Configure Parser Release",
+            "problemMatcher": "$gcc"
         },
         {
-            "label": "Test step 4",
             "type": "shell",
-            "command": "bash",
+            "label": "Run Tests Executable (with colors)",
+            "command": "${workspaceFolder}/build/JSON_PARSER_TESTS.exe",
             "args": [
-                "-c",
-                "for f in commands/json/tests/step4/*; do ./cli json -f \"$f\"; done"
+                "--gtest_color=yes"
             ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [],
-            "group": {
-                "kind": "test",
-                "isDefault": false
-            },
-            "dependsOn": "Build CLI with Makefile"
-        },
-        {
-            "type": "cppbuild",
-            "label": "C/C++: gcc build active file",
-            "command": "/usr/sbin/gcc",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "Task generated by Debugger."
+            "group": "test",
+            "dependsOn": "CMake: Build Tests (Ninja)",
+            "problemMatcher": "$gcc"
         }
-    ],
-    "version": "2.0.0"
+    ]
 }
