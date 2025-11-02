@@ -1,5 +1,7 @@
 #include "parser/Parser.h"
 
+using namespace json;
+
 JsonObject Parser::parse()
 {
     return parseObject();
@@ -102,7 +104,7 @@ JsonValue Parser::parseLiteral()
     if (b)
     {
         consume(current().type);
-        return b;
+        return !b;
     }
 
     b = (current().type == TokenType::Null);

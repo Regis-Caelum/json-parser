@@ -5,7 +5,7 @@
 
 #include <stack>
 
-namespace validator
+namespace json::validator
 {
     inline bool validate(Lexer &lexer)
     {

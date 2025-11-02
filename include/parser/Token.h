@@ -3,35 +3,37 @@
 
 #include <string>
 
-enum TokenType
+namespace json
 {
-    LBracket = 0,
-    RBracket,
-    LBrace,
-    RBrace,
-    Colon,
-    Comma,
+    enum TokenType
+    {
+        LBracket = 0,
+        RBracket,
+        LBrace,
+        RBrace,
+        Colon,
+        Comma,
 
-    True,
-    False,
-    Null,
+        True,
+        False,
+        Null,
 
-    String,
-    Number,
+        String,
+        Number,
 
-    EndOfFile,
-    Invalid
-};
+        EndOfFile,
+        Invalid
+    };
 
-class Token
-{
-public:
-    TokenType type;
-    std::string value;
-    size_t position;
+    class Token
+    {
+    public:
+        TokenType type;
+        std::string value;
+        size_t position;
 
-    Token(TokenType t, std::string v = "", size_t pos = 0)
-        : type(t), value(std::move(v)), position(pos) {}
-};
-
+        Token(TokenType t, std::string v = "", size_t pos = 0)
+            : type(t), value(std::move(v)), position(pos) {}
+    };
+}
 #endif // TOKEN_H

@@ -9,27 +9,30 @@
 #include <string>
 #include <stdexcept>
 
-class Parser
+namespace json
 {
-public:
-    Parser(std::vector<Token> tokens)
-        : tokens_(tokens), pos_(0) {}
+    class Parser
+    {
+    public:
+        Parser(std::vector<Token> tokens)
+            : tokens_(tokens), pos_(0) {}
 
-    JsonObject parse();
+        JsonObject parse();
 
-private:
-    std::vector<Token> tokens_;
-    size_t pos_;
+    private:
+        std::vector<Token> tokens_;
+        size_t pos_;
 
-    const Token &current();
-    void consume(TokenType expectedType);
+        const Token &current();
+        void consume(TokenType expectedType);
 
-    JsonValue parseValue();
-    JsonObject parseObject();
-    JsonValue parseArray();
-    JsonValue parseString();
-    JsonValue parseNumber();
-    JsonValue parseLiteral();
-};
+        JsonValue parseValue();
+        JsonObject parseObject();
+        JsonValue parseArray();
+        JsonValue parseString();
+        JsonValue parseNumber();
+        JsonValue parseLiteral();
+    };
+}
 
 #endif // PARSER_H

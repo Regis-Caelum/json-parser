@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+using namespace json;
+
 void Lexer::skipWhitespace()
 {
     while (!eof() && std::isspace(static_cast<unsigned char>(peek())))

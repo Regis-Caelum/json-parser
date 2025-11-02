@@ -1,6 +1,8 @@
 #include "parser/Lexer.h"
 #include <gtest/gtest.h>
 
+using namespace json;
+
 void assertTokens(const std::vector<Token> &tokens, const std::vector<TokenType> &expectedTypes, const std::vector<std::string> &expectedValues)
 {
     ASSERT_EQ(tokens.size(), expectedTypes.size());

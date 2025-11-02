@@ -6,30 +6,31 @@
 #include <vector>
 #include <string>
 
-class Lexer
+namespace json
 {
-public:
-    explicit Lexer(const std::string &input)
-        : input_(input), pos_(0) {}
 
-    std::vector<Token> tokenise();
+    class Lexer
+    {
+    public:
+        explicit Lexer(std::string_view input)
+            : input_(input), pos_(0) {}
 
-private:
-    std::string input_;
-    size_t pos_;
+        std::vector<Token> tokenise();
 
-    char peek() const { return pos_ < input_.size() ? input_[pos_] : '\0'; }
-    char get() { return pos_ < input_.size() ? input_[pos_++] : '\0'; }
-    bool eof() const { return pos_ >= input_.size(); }
+    private:
+        std::string_view input_;
+        size_t pos_;
 
-    void skipWhitespace();
-    Token nextToken();
+        char peek() const { return pos_ < input_.size() ? input_[pos_] : '\0'; }
+        char get() { return pos_ < input_.size() ? input_[pos_++] : '\0'; }
+        bool eof() const { return pos_ >= input_.size(); }
 
-    Token parseString();
-    Token parseNumber();
-    Token parseLiteral();
+        void skipWhitespace();
+        Token nextToken();
 
-    friend bool validate();
-};
-
+        Token parseString();
+        Token parseNumber();
+        Token parseLiteral();
+    };
+}
 #endif // LEXER_H

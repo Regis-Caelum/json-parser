@@ -3,6 +3,8 @@
 
 #include <gtest/gtest.h>
 
+using namespace json;
+
 TEST(ValidatorTest, ValidSimpleObject)
 {
     std::string input = "{ \"key\": 123 }";

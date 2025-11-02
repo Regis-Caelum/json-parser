@@ -3,6 +3,8 @@
 
 #include <gtest/gtest.h>
 
+using namespace json;
+
 inline Token T(TokenType type, const std::string &value = "")
 {
     return Token{type, value};
