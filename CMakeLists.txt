@@ -24,7 +24,7 @@ file(GLOB_RECURSE JSON_PARSER_SOURCES "src/*.cpp")
 add_executable(JSON_PARSER ${JSON_PARSER_SOURCES})
 
 # Optional: If you have a main.cpp directly in project root
-add_executable(JSON_PARSER src/main.cpp)
+# add_executable(JSON_PARSER src/main.cpp)
 
 # Optional: tests
 if(BUILD_TESTS)

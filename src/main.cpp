@@ -1,12 +1,15 @@
-#include "Json/json.h"
+#include "parser/Lexer.h"
 
 #include <iostream>
 
 int main()
 {
-    Json json;
-    json["name"] = "test";
+    Lexer lexer("{ 1, 2, 3 }");
 
-    std::cout << json["name"] << std::endl;
+    for (auto &&i : lexer.getTokens())
+    {
+        std::cout<< i << std::endl;
+    }
+    
     return 0;
 }
