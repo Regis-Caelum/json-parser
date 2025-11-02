@@ -30,6 +30,8 @@ public:
         return object_[std::string(key)];
     }
 
+    bool empty() const { return object_.empty(); }
+
 private:
     std::unordered_map<std::string, JsonValue> object_;
 };

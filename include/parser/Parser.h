@@ -2,14 +2,34 @@
 #define PARSER_H
 
 #include "Lexer.h"
+#include "json/Json.h"
+
+#include <vector>
+#include <memory>
+#include <string>
+#include <stdexcept>
 
 class Parser
 {
 public:
-    Parser(std::string input) : lexer_(input) {}
-    std::vector<std::string> parse() { return lexer_.getTokens(); }
+    Parser(std::vector<Token> tokens)
+        : tokens_(tokens), pos_(0) {}
+
+    JsonObject parse();
+
 private:
-    Lexer lexer_;
+    std::vector<Token> tokens_;
+    size_t pos_;
+
+    const Token &current();
+    void consume(TokenType expectedType);
+
+    JsonValue parseValue();
+    JsonObject parseObject();
+    JsonValue parseArray();
+    JsonValue parseString();
+    JsonValue parseNumber();
+    JsonValue parseLiteral();
 };
 
 #endif // PARSER_H

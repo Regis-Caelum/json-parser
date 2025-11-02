@@ -16,7 +16,6 @@ public:
 
 private:
     std::string input_;
-    std::vector<char> punctuations_;
     size_t pos_;
 
     char peek() const { return pos_ < input_.size() ? input_[pos_] : '\0'; }
@@ -29,6 +28,8 @@ private:
     Token parseString();
     Token parseNumber();
     Token parseLiteral();
+
+    friend bool validate();
 };
 
 #endif // LEXER_H
