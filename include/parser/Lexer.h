@@ -1,27 +1,34 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "Token.h"
+
 #include <vector>
 #include <string>
 
 class Lexer
 {
 public:
-    Lexer(std::string input) : input_(input) {}
-    std::vector<std::string> getTokens()
-    {
-        if (tokens_.empty())
-        {
-            tokens_ = tokenise();
-        }
-        return tokens_;
-    }
+    explicit Lexer(const std::string &input)
+        : input_(input), pos_(0) {}
+
+    std::vector<Token> tokenise();
 
 private:
     std::string input_;
-    std::vector<std::string> tokens_;
+    std::vector<char> punctuations_;
+    size_t pos_;
 
-    std::vector<std::string> tokenise();
+    char peek() const { return pos_ < input_.size() ? input_[pos_] : '\0'; }
+    char get() { return pos_ < input_.size() ? input_[pos_++] : '\0'; }
+    bool eof() const { return pos_ >= input_.size(); }
+
+    void skipWhitespace();
+    Token nextToken();
+
+    Token parseString();
+    Token parseNumber();
+    Token parseLiteral();
 };
 
 #endif // LEXER_H

@@ -28,6 +28,8 @@ add_executable(JSON_PARSER ${JSON_PARSER_SOURCES})
 
 # Optional: tests
 if(BUILD_TESTS)
+    include(FetchContent)
+
     FetchContent_Declare(
         googletest
         URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
@@ -38,7 +40,27 @@ if(BUILD_TESTS)
     enable_testing()
 
     file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
+
+    # Create tests executable
     add_executable(JSON_PARSER_TESTS ${TEST_SOURCES})
+
+    # Include directories for tests
+    target_include_directories(JSON_PARSER_TESTS
+        PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/src
+    )
+
+    # If tests need your src code, add it
+    file(GLOB_RECURSE SRC_SOURCES "src/*.cpp")
+    target_sources(JSON_PARSER_TESTS PRIVATE ${SRC_SOURCES})
+
+    # Link with gtest
+    target_link_libraries(JSON_PARSER_TESTS
+        PRIVATE
+        gtest_main
+    )
 
     add_test(NAME JSON_PARSER_TESTS COMMAND JSON_PARSER_TESTS)
 endif()
+

@@ -73,7 +73,7 @@ public:
         else if constexpr (std::is_same_v<DecayT, array_t> || std::is_same_v<DecayT, object_t>)
             value_ = val;
         else if constexpr (std::is_same_v<DecayT, JsonValue>)
-            value_ = val.value;
+            value_ = val.value_;
         else
             static_assert(always_false<DecayT>, "Unsupported type for JsonValue constructor");
     }

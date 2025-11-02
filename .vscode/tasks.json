@@ -158,7 +158,7 @@
         },
         {
             "type": "shell",
-            "label": "Run Tests Executable (with colors)",
+            "label": "Run Tests Detailed",
             "command": "${workspaceFolder}/build/JSON_PARSER_TESTS.exe",
             "args": [
                 "--gtest_color=yes"
